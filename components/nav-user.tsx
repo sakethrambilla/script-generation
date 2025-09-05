@@ -4,6 +4,8 @@ import {
   IconCreditCard,
   IconDotsVertical,
   IconLogout,
+  IconMoon,
+  IconSun,
   IconNotification,
   IconUserCircle,
 } from "@tabler/icons-react";
@@ -25,6 +27,8 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { signOut } from "next-auth/react";
+import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
 
 export function NavUser({
   user,
@@ -36,7 +40,12 @@ export function NavUser({
   };
 }) {
   const { isMobile } = useSidebar();
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
 
+  useEffect(() => {
+    setMounted(true);
+  }, []);
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -92,6 +101,21 @@ export function NavUser({
               <DropdownMenuItem>
                 <IconNotification />
                 Notifications
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                suppressHydrationWarning
+              >
+                {mounted ? (
+                  theme === "dark" ? (
+                    <IconSun />
+                  ) : (
+                    <IconMoon />
+                  )
+                ) : (
+                  <IconMoon />
+                )}
+                {mounted ? (theme === "dark" ? "Light" : "Dark") : "Dark"}
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
